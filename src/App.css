@@ -1,0 +1,152 @@
+/* Общий контейнер */
+.app {
+  display: flex;
+  height: 100vh;
+  font-family: sans-serif;
+}
+
+/* Левая панель */
+.sidebar {
+  width: 250px;
+  background: #f2f2f2;
+  padding: 10px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+/* Кнопки и вкладки */
+.sidebar button {
+  display: block;
+  width: 100%;
+  margin: 5px 0;
+  padding: 8px;
+  font-size: 14px;
+  background: white;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  border-radius: 4px;
+  text-align: left;
+  transition: background 0.2s;
+}
+
+.sidebar button:hover {
+  background: #e6e6e6;
+}
+
+.sidebar button.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.sidebar h2,
+.sidebar h3 {
+  margin-top: 0.5em;
+}
+
+/* Область карты */
+.map-container {
+  flex: 1;
+  position: relative;
+
+}
+
+/* Панель координат и высоты */
+.map-coordinates {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* Список чекбоксов маршрута */
+.sidebar ul {
+  list-style: none;
+  padding-left: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.sidebar li {
+  margin-bottom: 4px;
+}
+
+/* Адаптация карты leaflet */
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+}
+
+/* Иконки модулей */
+.module-icon {
+  background: #F9F9F9;
+  padding: 5px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 16px;
+  line-height: 24px;
+  width: 24px;
+  height: 24px;
+}
+
+.module-icon-inline {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+
+.sidebar button span.module-icon-inline {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+/* Стили для выпадающих списков */
+select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+select:hover {
+  border-color: #888;
+}
+
+/* Стили для лейблов */
+label {
+  font-size: 14px;
+  color: #333;
+  margin-top: 10px;
+  display: block;
+}
+
+/* Стили для контейнера формы */
+.items {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Стили для каждого блока с выпадающим списком */
+.items > div {
+  margin-bottom: 15px;
+}
+
+
