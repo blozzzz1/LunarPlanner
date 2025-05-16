@@ -1,0 +1,389 @@
+* {
+    font-family: "Geologica", sans-serif;
+    box-sizing: border-box;
+}
+
+.module-marker {
+    width: 32px;
+    height: 32px;
+    pointer-events: auto;
+
+    user-select: none;
+}
+
+
+.module-marker {
+    transition: transform 0.2s ease;
+    pointer-events: auto;
+}
+
+.module-marker.pending {
+    opacity: 0.7;
+    filter: drop-shadow(0 0 4px yellow);
+    cursor: grab;
+}
+
+.module-marker.dragging {
+    cursor: grabbing;
+    transform: scale(1.05);
+    cursor: grab;
+}
+
+.module-marker.type-habitat {
+    border: 2px solid #5ec45e;
+}
+
+.module-marker.type-power {
+    border: 2px solid #c45e5e;
+}
+
+.conflict-circle {
+    width: 300px;
+
+    height: 300px;
+    background-color: rgba(255, 0, 0, 0.2);
+    border: 2px solid red;
+    border-radius: 50%;
+    pointer-events: none;
+
+}
+
+.main {
+    height: calc(100% - 64px);
+    display: flex;
+}
+
+.map,
+.sideBar {
+    height: 100%;
+
+}
+
+.map {
+    flex-grow: 1;
+}
+
+.sideBar {
+    flex-grow: 0;
+    width: 320px;
+}
+
+.buttons-tab {
+    padding: 16px;
+    border-bottom: 1px solid #E5E5E5;
+}
+
+.buttons-wrap {
+    display: inline-block;
+    padding: 3px;
+    border: 6px;
+    background: #F5F5F5;
+    border-radius: 8px;
+    text-align: center;
+    width: 100%;
+
+}
+
+.buttons-wrap button {
+    font-size: 14px;
+    line-height: 20px;
+    padding: 2px 18px;
+    background: #F5F5F5;
+    color: #737373;
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.buttons-wrap .active {
+    color: #0A0A0A;
+    background: #FFFFFF;
+}
+
+
+
+.items {
+    padding: 16px;
+    overflow: auto;
+}
+
+.module_button {
+    display: flex;
+    align-items: center;
+    border: 0;
+    padding: 5px 17px;
+    width: 100%;
+    margin-bottom: 8px;
+    background: #F9F9F9;
+    border-radius: 6px;
+}
+
+.new_route_button {
+    margin-bottom: 16px;
+}
+
+.submit button {
+    background-color: #ebebeb;
+    color: rgb(0, 0, 0);
+    padding: 5px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    text-transform: uppercase;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin-right: 10px;
+    
+    margin-bottom: 10px;
+}
+
+.submit button:hover {
+    background: rgb(207, 207, 207);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px); /* Легкий подъем */
+}
+/* Основные стили для кнопки */
+.empty_button {
+    background: linear-gradient(135deg, #afb4c2, #9d9fa8); /* Градиентный фон */
+    color: white;
+    padding: 5px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    text-transform: uppercase;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Расстояние между иконкой и текстом */
+    margin-bottom: 10px;
+}
+  
+  /* Эффект при наведении */
+.empty_button:hover {
+    background: linear-gradient(135deg, #553c6d, #6e8efb);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px); /* Легкий подъем */
+}
+  
+  /* Эффект при нажатии */
+.empty_button:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+  
+  /* Иконка внутри кнопки */
+.empty_button svg {
+    width: 20px;
+    height: 20px;
+    fill: white;
+}
+
+.route_choise {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.route_choise label {
+    margin-bottom: 10px;
+}
+
+.route_item {
+    display: flex;
+    padding: 2px 4px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    gap: 6px;
+    border: 1px solid #F5F5F5;
+}
+
+.route_item.active {
+    border: 1px solid #0A0A0A;
+}
+
+/* .module-shape,
+.module-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.module-shape svg,
+.module-icon svg {
+    width: 100%;
+    height: 100%;
+} */
+
+/* .conflict-circle {
+    border: 2px dashed red;
+    border-radius: 50%;
+    position: absolute;
+    pointer-events: none;
+} */
+
+
+.module-container {
+    position: relative;
+    /* transform: translate(-50%, -50%); */
+    pointer-events: none;
+}
+
+.module-container .module-icon-wrapper {
+    border-radius: 12px;
+    background-color: #FFFFFF;
+}
+
+
+.module-container.pending .module-icon-wrapper {
+    filter: drop-shadow(0 0 4px rgb(48, 33, 250));
+}
+
+.module-container.highlighted .module-icon-wrapper {
+    background-color: #77FF4E;
+}
+
+.module-shape-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+
+.module-icon-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.module-icon-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 32px;
+    /* фиксировано */
+    height: 32px;
+    transform: translate(-50%, -50%);
+    pointer-events: auto;
+}
+
+.module-container.highlighted {
+    box-shadow: 0 0 15px 5px yellow;
+    z-index: 999 !important;
+}
+
+.save_plan_button {
+    
+    position: fixed;
+    bottom: 10px; 
+    margin-left:330px;
+    
+    display: flex;
+    
+    gap: 10px;
+    
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000; /* Убедимся, что элемент поверх всего */
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.save_plan_button button {
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    color: #333;
+    font-size: 14px;
+}
+
+.save_plan_button input[type="file"] {
+    margin-top: 6px;
+    cursor: pointer;
+    color: #FFFFFF;
+    -webkit-backdrop-filter: drop-shadow(10);
+}
+
+
+.submit button.conflict {
+    background-color: #f8f8f8; /* Красный цвет для конфликта */
+    color: rgb(99, 99, 99); /* Белый текст */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0);
+}
+
+.submit button.conflict:hover {
+
+   
+    background-color: #f8f8f8;
+    transform: translateY(-0px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0);
+}
+
+.module_div {
+    margin-bottom: 10px;
+    background-color: #F9F9F9;
+}
+
+
+.button_info {
+    border: none;
+}
+
+.module-buttons-container {
+    display: flex;
+}
+
+.module-buttons-container p {
+    text-align: left;
+    font-size: 15px;
+    padding: 0 5px
+}
+
+.button_info {
+    background: #f9f9f9;
+}
+
+.button_info .arrow-icon {
+    transition: transform 0.3s ease;
+}
+
+.button_info.expanded .arrow-icon {
+    transform: rotate(180deg);
+}
+
+.module_info p {
+    margin-top: 0px;
+    padding: 10px 20px;
+    background: #F9F9F9;
+}
+
+.items::-webkit-scrollbar {
+    width: 6px;
+}
+
+.items::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.items::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.items::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
