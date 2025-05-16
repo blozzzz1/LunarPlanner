@@ -36,6 +36,8 @@ interface Module {
     id: string;
     name: string;
     radius: number;
+    description:string;
+    additionalInfo:string;
 }
 
 export interface Zone {
@@ -64,28 +66,145 @@ const exclusionDistances: Record<string, Record<string, number>> = {
 };
 
 const initialModules: Module[] = [
-    { id: 'habitat', name: 'Жилой модуль', radius: 50 },
-    { id: 'lab', name: 'Исследовательский модуль', radius: 70 },
-    { id: 'power', name: 'Солнечная электроснация', radius: 100 },
-    { id: 'launchpad', name: 'Космодром', radius: 80 },
-    { id: 'sports', name: 'Спортивный модуль', radius: 60 },
-    
-    { id: 'medical', name: 'Медицинский модуль', radius: 55 },
-    
-    { id: 'admin', name: 'Административный модуль', radius: 45 },
-    
-    { id: 'repair', name: 'Ремонтный модуль', radius: 65 },
-    
-    { id: 'observatory', name: 'Астрономическая площадка', radius: 40 },
-   
-    { id: 'greenhouse', name: 'Плантация', radius: 90 },
-    
-    { id: 'landfill', name: 'Мусорный полигон', radius: 75 },
-   
-    { id: 'industrial', name: 'Производственное предприятие', radius: 110 },
-   
-    { id: 'mining', name: 'Добывающая шахта', radius: 85 }
+    { 
+        id: 'habitat', 
+        name: 'Жилой модуль', 
+        radius: 50, 
+        description: 'Модуль для проживания, обеспечивающий комфортные условия для жизни.', 
+        additionalInfo: 'Включает спальни, кухни и общие зоны.' 
+    },
+    { 
+        id: 'lab', 
+        name: 'Исследовательский модуль', 
+        radius: 70, 
+        description: 'Модуль для научных исследований и экспериментов.', 
+        additionalInfo: 'Оснащен лабораторным оборудованием и рабочими местами для ученых.' 
+    },
+    { 
+        id: 'power', 
+        name: 'Солнечная электроснация', 
+        radius: 100, 
+        description: 'Модуль для генерации солнечной энергии.', 
+        additionalInfo: 'Обеспечивает электроэнергией другие модули.' 
+    },
+    { 
+        id: 'launchpad', 
+        name: 'Космодром', 
+        radius: 80, 
+        description: 'Площадка для запуска космических аппаратов.', 
+        additionalInfo: 'Содержит инфраструктуру для подготовки и запуска ракет.' 
+    },
+    { 
+        id: 'sports', 
+        name: 'Спортивный модуль', 
+        radius: 60, 
+        description: 'Модуль для спортивных мероприятий и тренировок.', 
+        additionalInfo: 'Включает спортивные площадки и тренажерные залы.' 
+    },
+    { 
+        id: 'medical', 
+        name: 'Медицинский модуль', 
+        radius: 55, 
+        description: 'Модуль для оказания медицинской помощи.', 
+        additionalInfo: 'Оснащен медицинским оборудованием и палатами для пациентов.' 
+    },
+    { 
+        id: 'admin', 
+        name: 'Административный модуль', 
+        radius: 45, 
+        description: 'Модуль для управления и координации деятельности.', 
+        additionalInfo: 'Содержит офисные помещения и конференц-залы.' 
+    },
+    { 
+        id: 'repair', 
+        name: 'Ремонтный модуль', 
+        radius: 65, 
+        description: 'Модуль для ремонта и обслуживания оборудования.', 
+        additionalInfo: 'Оснащен инструментами и запасными частями.' 
+    },
+    { 
+        id: 'observatory', 
+        name: 'Астрономическая площадка', 
+        radius: 40, 
+        description: 'Модуль для наблюдения за небесными телами.', 
+        additionalInfo: 'Содержит телескопы и оборудование для астрономических исследований.' 
+    },
+    { 
+        id: 'greenhouse', 
+        name: 'Плантация', 
+        radius: 90, 
+        description: 'Модуль для выращивания растений и сельского хозяйства.', 
+        additionalInfo: 'Обеспечивает условия для роста растений и сбора урожая.' 
+    },
+    { 
+        id: 'landfill', 
+        name: 'Мусорный полигон', 
+        radius: 75, 
+        description: 'Модуль для утилизации отходов.', 
+        additionalInfo: 'Обеспечивает безопасное хранение и переработку мусора.' 
+    },
+    { 
+        id: 'industrial', 
+        name: 'Производственное предприятие', 
+        radius: 110, 
+        description: 'Модуль для производства товаров и услуг.', 
+        additionalInfo: 'Содержит производственные линии и склады.' 
+    },
+    { 
+        id: 'mining', 
+        name: 'Добывающая шахта', 
+        radius: 85, 
+        description: 'Модуль для добычи полезных ископаемых.', 
+        additionalInfo: 'Оснащен оборудованием для горных работ.' 
+    }
 ];
+
+
+
+// Выносим логику расчета уклона в отдельную функцию
+const calculateSlopeAtPixel = (pixelX: number, pixelY: number, ctx: CanvasRenderingContext2D): { degrees: number, direction: string } | null => {
+  try {
+    const offsets = [
+      { x: 0, y: 0 },   // Центральная точка
+      { x: 10, y: 0 },   // Восток
+      { x: -10, y: 0 },  // Запад
+      { x: 0, y: 10 },   // Юг
+      { x: 0, y: -10 }   // Север
+    ];
+
+    const elevations = offsets.map(offset => {
+      const x = pixelX + offset.x;
+      const y = pixelY + offset.y;
+      const data = ctx.getImageData(x, y, 1, 1).data;
+      return getElevationFromColor(data[0], data[1], data[2]) as number;
+    });
+
+    const centerElevation = elevations[0];
+    const distance = 500;
+
+    const dz_dx = (elevations[1] - elevations[2]) / (2 * distance);
+    const dz_dy = (elevations[3] - elevations[4]) / (2 * distance);
+
+    const slopeDegrees = Math.atan(Math.sqrt(dz_dx * dz_dx + dz_dy * dz_dy)) * (180 / Math.PI);
+
+    // Расчет направления (как у вас в коде)
+    const deltas = [
+      { value: elevations[1] - centerElevation, dir: '→' },
+      { value: elevations[2] - centerElevation, dir: '←' },
+      { value: elevations[3] - centerElevation, dir: '↓' },
+      { value: elevations[4] - centerElevation, dir: '↑' }
+    ].sort((a, b) => Math.abs(b.value) - Math.abs(a.value));
+
+    return {
+      degrees: slopeDegrees,
+      direction: deltas[0].dir
+    };
+  } catch {
+    return null;
+  }
+};
+
+
 
 const projectCoordinates = (coords: [number, number], fromProj: string, toProj: string): [number, number] => {
     if (fromProj === toProj) return coords;
@@ -115,6 +234,7 @@ const hasConflict = (zoneA: Zone, otherZones: Zone[]) => {
 };
 
 
+
 export default function MoonMap() {
     const [mode, setMode] = useState<Mode>('view');
     const [zones, setZones] = useState<Zone[]>([]);
@@ -129,7 +249,8 @@ export default function MoonMap() {
     const [centerLon, setCenterLon] = useState(0);
     const [centerLat, setCenterLat] = useState(0);
     const [cursorCoords, setCursorCoords] = useState<{ lon: number; lat: number }>({ lon: 0, lat: 0 });
-    const [elevation, setElevation] = useState<number | null>(null);
+    const [elevation, setElevation] = useState<number | null>(null); 
+    const [slope, setSlope] = useState<Slope>(null);
 
     const [layerName, setLayerName] = useState<'luna_wac_global' | 'luna_wac_dtm'>('luna_wac_global');
     const [showLayerMenu, setShowLayerMenu] = useState(false);
@@ -150,6 +271,7 @@ export default function MoonMap() {
     const [highlightedRouteId, setHighlightedRouteId] = useState<number | null>(null);
 
 
+
     const viewParamsRef = useRef<{
         center: [number, number];
         zoom: number;
@@ -162,6 +284,11 @@ export default function MoonMap() {
         projection: 'EPSG:4326',
     });
 
+    type Slope = {
+    percent: number; 
+    degrees: number;  
+    direction: string;
+    } | null;           
 
     interface Route {
         id: number;
@@ -172,6 +299,7 @@ export default function MoonMap() {
         length: number;
     }
 
+    
     const [routes, setRoutes] = useState<Route[]>([]);
     const [newRoute, setNewRoute] = useState<{
         from: Zone | null;
@@ -752,15 +880,74 @@ export default function MoonMap() {
                         try {
                             const pixelX = Math.round(e.clientX - mapRect.left);
                             const pixelY = Math.round(e.clientY - mapRect.top);
+
+                            const offsets = [
+                            { x: 0, y: 0 },   // Центральная точка
+                            { x: 10, y: 0 },   // Восток
+                            { x: -10, y: 0 },  // Запад
+                            { x: 0, y: 10 },   // Юг
+                            { x: 0, y: -10 }   // Север
+                            ];
+
+                            const elevations: number[] = offsets.map(offset => {
+                                const x = pixelX + offset.x;
+                                const y = pixelY + offset.y;
+                                const data = ctx.getImageData(x, y, 1, 1).data;
+                                return getElevationFromColor(data[0], data[1], data[2]) as number;
+                            });
+
+                            const centerElevation = elevations[0];
+                            setElevation(centerElevation);
+
+                            const distance = 500; 
+
+                            
+                        
+                            const dz_dx = (elevations[1] - elevations[2]) / (2 * distance); // (восток - запад) / (2 * расстояние)
+                            const dz_dy = (elevations[3] - elevations[4]) / (2 * distance);
+
+                            const slopePercent = Math.sqrt(dz_dx * dz_dx + dz_dy * dz_dy) * 100;
+                            const slopeDegrees = Math.atan(Math.sqrt(dz_dx * dz_dx + dz_dy * dz_dy)) * (180 / Math.PI);
+
+                            const deltaEast = elevations[1] - centerElevation;  // Восток
+                            const deltaWest = elevations[2] - centerElevation;  // Запад
+                            const deltaSouth = elevations[3] - centerElevation; // Юг
+                            const deltaNorth = elevations[4] - centerElevation; // Север
+                            
+                            
+                            const deltas = [
+                                { value: deltaEast, dir: '→' },  // Восток
+                                { value: deltaWest, dir: '←' },  // Запад
+                                { value: deltaSouth, dir: '↓' }, // Юг
+                                { value: deltaNorth, dir: '↑' }  // Север
+                            ];
+
+                            deltas.sort((a, b) => Math.abs(b.value) - Math.abs(a.value));
+
+                            
+
+                            const mainSlopeDir = deltas[0].dir;
+
+                            
+
+
+                            setSlope({
+                            percent: slopePercent,
+                            degrees: slopeDegrees,
+                            direction: mainSlopeDir
+                                });
+
                             const data = ctx.getImageData(pixelX, pixelY, 1, 1).data;
-                            setElevation(getElevationFromColor(data[0], data[1], data[2]));
+                            setElevation(centerElevation);
                         } catch {
                             setElevation(null);
+                            setSlope(null);
                         }
                     }
                 }
             } else {
                 setElevation(null);
+                setSlope(null);
             }
         };
 
@@ -772,6 +959,7 @@ export default function MoonMap() {
             document.removeEventListener('mousemove', handleMouseMove);
         };
     }, [layerName]);
+    
     useEffect(() => {
         const map = mapInstance.current;
         if (!map) return;
@@ -974,14 +1162,31 @@ export default function MoonMap() {
     }, [isDragging, dragOverlay, pendingZone, selectedModule, zones, projectionType]);
 
 
+    
+    type ModuleInfoVisibility = {
+        [key: string]: boolean; 
+    };
 
-
+    const [isModuleInfoVisible, setIsModuleInfoVisible] = useState<ModuleInfoVisibility>({});
+    // Function to toggle module information visibility
+    const toggleModuleInfo = (id: string) => { // Change to number if IDs are numbers
+        setIsModuleInfoVisible(prevState => ({
+            ...prevState,
+            [id]: !prevState[id]
+        }));
+    };
+    
 
     return (
         <>
             <Header />
             <div className='main'>
-                <div className='sideBar'>
+                <div className='sideBar' style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        height: '93vh', 
+                        overflow: 'hidden' 
+                    }}>
                     <div className='buttons-tab'>
                         <div className="buttons-wrap">
                             <button onClick={() => setActiveTab('modules')} className={`${activeTab === 'modules' ? 'active' : ''}`}>Модули</button>
@@ -991,94 +1196,139 @@ export default function MoonMap() {
                     </div>
 
                     {activeTab === 'modules' ? (
-                        <div className='items'>
+                        <div className='items' style={{
+                                flex: 1, 
+                                overflowY: 'auto', 
+                                paddingRight: '8px' 
+                            }}>
                             {initialModules.map(mod => (
-                                <button className='module_button'
-                                    key={mod.id}
-                                    onMouseDown={(e) => {
-                                        e.preventDefault();
-                                        if (!mapInstance.current || mode !== 'place' || pendingZone) return;
-                                        const zone = pendingZone as Zone | null;
-                                        if (zone) {
-                                            mapInstance.current?.removeOverlay(zone.overlay);
-                                        }
-                                        setSelectedModule(mod);
+                                <div className='module_div'>
+                                <div className='module-buttons-container'>
+                                    <button className='module_button'
+                                        key={mod.id}
+                                        onMouseDown={(e) => {
+                                            e.preventDefault();
+                                            if (!mapInstance.current || mode !== 'place' || pendingZone) return;
+                                            const zone = pendingZone as Zone | null;
+                                            if (zone) {
+                                                mapInstance.current?.removeOverlay(zone.overlay);
+                                            }
+                                            setSelectedModule(mod);
 
-                                        const container = document.createElement('div');
-
-
-                                        const overlay = new Overlay({
-                                            positioning: 'center-center',
-                                            element: container,
-                                            stopEvent: false,
-                                        });
-
-                                        updateOverlayClass(overlay, {
-                                            pending: true,
-                                            dragging: isDragging,
-                                            type: mod.id
-                                        });
+                                            const container = document.createElement('div');
 
 
-                                        container.innerHTML = `
-                                        <div class="module-shape-wrapper">${moduleShapes[mod.id]}</div>
-                                        <div class="module-icon-wrapper">${moduleIcons[mod.id]}</div>
-                                    `;
-
-
-
-
-                                        mapInstance.current.addOverlay(overlay);
-                                        const center = mapInstance.current.getView().getCenter();
-                                        overlay.setPosition(center);
-
-                                        requestAnimationFrame(() => {
-                                            // 💡 Убедимся, что элемент отрендерен
-                                            container.addEventListener('mousedown', (e) => {
-                                                if (!(mode === 'place' || mode === 'edit')) return;// 🔒
-                                                if (!pendingZone || overlay.getElement() !== e.currentTarget) return;
-                                                e.preventDefault();
-                                                e.stopPropagation();
-                                                setIsDragging(true);
-
-                                                if (dragPanInteractionRef.current) {
-                                                    dragPanInteractionRef.current.setActive(false);
-                                                }
+                                            const overlay = new Overlay({
+                                                positioning: 'center-center',
+                                                element: container,
+                                                stopEvent: false,
                                             });
 
-                                        });
+                                            updateOverlayClass(overlay, {
+                                                pending: true,
+                                                dragging: isDragging,
+                                                type: mod.id
+                                            });
 
 
-
-                                        const geo = unproject(center);
-                                        const newZone: Zone = {
-                                            id: Date.now(),
-                                            type: mod.id,
-                                            name: mod.name,
-                                            radius: mod.radius,
-                                            coord: [geo.lon, geo.lat],
-                                            overlay,
-                                        };
-
-                                        setPendingZone(newZone);
-                                        setDragOverlay(overlay);
-                                        setIsDragging(true);
-
-                                    }}
+                                            container.innerHTML = `
+                                            <div class="module-shape-wrapper">${moduleShapes[mod.id]}</div>
+                                            <div class="module-icon-wrapper">${moduleIcons[mod.id]}</div>
+                                        `;
 
 
 
 
+                                            mapInstance.current.addOverlay(overlay);
+                                            const center = mapInstance.current.getView().getCenter();
+                                            overlay.setPosition(center);
+
+                                            requestAnimationFrame(() => {
+                                                // 💡 Убедимся, что элемент отрендерен
+                                                container.addEventListener('mousedown', (e) => {
+                                                    if (!(mode === 'place' || mode === 'edit')) return;// 🔒
+                                                    if (!pendingZone || overlay.getElement() !== e.currentTarget) return;
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                    setIsDragging(true);
+
+                                                    if (dragPanInteractionRef.current) {
+                                                        dragPanInteractionRef.current.setActive(false);
+                                                    }
+                                                });
+
+                                            });
 
 
-                                >
-                                    <span
-                                        dangerouslySetInnerHTML={{ __html: moduleIcons[mod.id] }}
-                                        style={{ marginRight: 6 }}
-                                    />
-                                    {mod.name}
-                                </button>
+
+                                            const geo = unproject(center);
+                                            const newZone: Zone = {
+                                                id: Date.now(),
+                                                type: mod.id,
+                                                name: mod.name,
+                                                radius: mod.radius,
+                                                coord: [geo.lon, geo.lat],
+                                                overlay,
+                                            };
+
+                                            setPendingZone(newZone);
+                                            setDragOverlay(overlay);
+                                            setIsDragging(true);
+
+                                        }}
+
+
+
+
+
+
+                                    >
+                                        <span
+                                            dangerouslySetInnerHTML={{ __html: moduleIcons[mod.id] }}
+                                            style={{ marginRight: 6 }}
+                                        />
+                                        <p>{mod.name}</p>
+                                    </button>
+
+                                
+                                    <button 
+                                        className={`button_info ${isModuleInfoVisible[mod.id] ? 'expanded' : ''}`} 
+                                        onClick={() => toggleModuleInfo(mod.id)}
+                                        aria-label={isModuleInfoVisible[mod.id] ? "Скрыть" : "Подробнее"}
+                                    >
+                                        <svg 
+                                            width="20" 
+                                            height="20" 
+                                            viewBox="0 0 24 24" 
+                                            fill="none" 
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="arrow-icon"
+                                        >
+                                            <path 
+                                                d="M7 10L12 15L17 10" 
+                                                stroke="currentColor" 
+                                                strokeWidth="2" 
+                                                strokeLinecap="round" 
+                                                strokeLinejoin="round"
+                                            />
+                                        </svg>
+                                    </button>
+                                </div>
+                                
+                                {isModuleInfoVisible[mod.id] && (
+                                    <div className='module_info'>
+                                        <p>Описание: {mod.description}</p>
+                                        <p>Дополнительная информация: {mod.additionalInfo}</p>
+                                    </div>
+                                )}
+
+                                </div>
+
+                                
                             ))}
+
+
+                            
                         </div>
                     ) : (
                         <div className='items'>
@@ -1320,6 +1570,7 @@ export default function MoonMap() {
                     <div style={{ marginTop: 20, color: '#fff' }}>
                         <div>Lon: {cursorCoords.lon.toFixed(2)}, Lat: {cursorCoords.lat.toFixed(2)}</div>
                         <div>Elevation: {elevation ? `${elevation.toFixed(2)} meters` : 'Loading...'}</div>
+                        <div>Slope: {slope ? `${slope.percent.toFixed(1)} % ${slope.degrees.toFixed(1)}° ${slope?.direction}` : 'Loading...'}</div>
                     </div>
                 </div>
 
@@ -1436,6 +1687,9 @@ export default function MoonMap() {
                     </div>
 
                 </div>
+
+                
+                
                 {pendingZone && (
                     <div className='submit'
                         style={{
@@ -1454,6 +1708,10 @@ export default function MoonMap() {
                             Подтвердить размещение модуля <strong>{pendingZone.name}</strong> на координатах{' '}
                             Lon: {pendingZone.coord[0].toFixed(2)}, Lat: {pendingZone.coord[1].toFixed(2)}?
                         </p>
+
+                        
+
+
                         <button
                             className={isConflict ? 'conflict' : ''}
                             disabled={isConflict}
