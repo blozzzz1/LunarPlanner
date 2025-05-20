@@ -21,6 +21,8 @@ import Stroke from 'ol/style/Stroke';
 import { LineString } from 'ol/geom';
 import { Feature } from 'ol';
 import Header from './components/Header';
+import { getTileFromCache, saveTileToCache } from './tileCache';
+import ImageTile from 'ol/ImageTile';
 
 
 // Регистрация проекции IAU2000:30166
@@ -692,6 +694,49 @@ export default function MoonMap() {
                 return url;
             },
             crossOrigin: 'anonymous',
+            
+            tileLoadFunction: async (tile, src) => {
+                const imageTile = tile as ImageTile;
+                const img = imageTile.getImage() as HTMLImageElement;
+                
+                // Try to load from cache first
+                const cachedTile = await getTileFromCache(src);
+                if (cachedTile) {
+                    img.src = URL.createObjectURL(cachedTile);
+                    return;
+                }
+
+                // If not in cache, load from network with retries
+                const maxRetries = 3;
+                let attempt = 0;
+
+                const loadTile = async () => {
+                    try {
+                        const response = await fetch(src, { 
+                            signal: AbortSignal.timeout(8000 + (attempt * 2000)) // Increase timeout with each retry
+                        });
+                        
+                        if (!response.ok) throw new Error('Network response was not ok');
+                        
+                        const blob = await response.blob();
+                        img.src = URL.createObjectURL(blob);
+                        
+                        // Save successful load to cache
+                        await saveTileToCache(src, blob);
+                    } catch (error) {
+                        if (attempt < maxRetries) {
+                            attempt++;
+                            await loadTile();
+                        } else {
+                            console.warn('Failed to load tile after retries:', src);
+                            // Set a minimal error tile
+                            img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
+                        }
+                    }
+                };
+
+                await loadTile();
+            }
         });
 
 
