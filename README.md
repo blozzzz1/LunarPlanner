@@ -1,5 +1,4 @@
-![image](https://github.com/user-attachments/assets/c68e90c2-29ae-4c49-9e54-3ed18e71ef7b)
-
+![image](https://github.com/user-attachments/assets/1f281ae8-883e-4d5d-8a40-490dc7b2b86a)
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=black)](https://reactjs.org/)
