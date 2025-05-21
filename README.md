@@ -29,7 +29,7 @@
 1. Клонируйте репозиторий:
    ```bash
    git clone https://github.com/your-username/moon-base-planner.git
-   cd moon-base-planner
+   cd LunarPlanner
 Установите зависимости:
 
 bash
