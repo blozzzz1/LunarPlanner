@@ -28,19 +28,22 @@
    cd LunarPlanner
 Установите зависимости:
 
-bash
+```bash
 npm install
+```
 Запуск приложения
 Для разработки:
 
-bash
-npm start
+```bash
+   npm start
+```
 Приложение будет доступно по адресу: http://localhost:8080
 
 Для сборки production-версии:
 
-bash
-npm run build
+   ```bash
+      npm run build
+   ```
 🛠 Технологии
 Frontend: React 18, TypeScript
 
