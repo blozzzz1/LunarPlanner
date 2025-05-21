@@ -1,4 +1,5 @@
-# 🌕 Moon Base Planner
+![image](https://github.com/user-attachments/assets/c68e90c2-29ae-4c49-9e54-3ed18e71ef7b)
+
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=black)](https://reactjs.org/)
@@ -6,10 +7,6 @@
 [![OpenLayers](https://img.shields.io/badge/OpenLayers-1F6B75?logo=openlayers&logoColor=white)](https://openlayers.org/)
 
 Инструмент для планирования лунной базы с реальной картой Луны.
-
-![image](https://github.com/user-attachments/assets/a63852db-b794-4305-a540-96880c6a7394)
-
-
 
 ## ✨ Особенности
 
