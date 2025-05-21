@@ -65,6 +65,7 @@ const exclusionDistances: Record<string, Record<string, number>> = {
     landfill: { habitat: 200, greenhouse: 120, medical: 150 },
     industrial: { habitat: 120, greenhouse: 100, medical: 60 },
     mining: { habitat: 150, sports: 100, admin: 90 },
+    connectiontower: {habitat: 150, sports: 100, admin: 90}
 };
 
 const initialModules: Module[] = [
@@ -158,6 +159,13 @@ const initialModules: Module[] = [
         radius: 85, 
         description: 'Модуль для добычи полезных ископаемых.', 
         additionalInfo: 'Оснащен оборудованием для горных работ.' 
+    },
+    { 
+        id: 'connectiontower', 
+        name: 'Вышка связи', 
+        radius: 85, 
+        description: 'Вышка связи для передачи данных между модулями.', 
+        additionalInfo: 'Очень высокая.' 
     }
 ];
 
@@ -1570,17 +1578,17 @@ export default function MoonMap() {
 
 
                 <div
+                    className='buttons-tab bottom-info-tab'
                     style={{
                         position: 'absolute',
                         bottom: 50,
                         right: 10,
                         zIndex: 999,
-                        background: 'rgba(0,0,0,0.6)',
-                        padding: 10,
-                        borderRadius: 8,
+                        borderRadius: '15px',
+                       
                     }}
                 >
-                    <label style={{ color: '#fff', fontWeight: 'bold', marginRight: 8 }}>Проекция:</label>
+                    <label style={{ color: 'black', fontWeight: 'bold', marginRight: 8 }}>Проекция:</label>
                     <select
                         value={projectionType}
                         onChange={(e) => setProjectionType(e.target.value as 'cylindrical' | 'orthographic')}
@@ -1590,7 +1598,7 @@ export default function MoonMap() {
                     </select>
 
                     {projectionType === 'orthographic' && (
-                        <div style={{ marginTop: 10, color: '#fff' }}>
+                        <div style={{ marginTop: 10, color: '#black' }}>
                             <div>
                                 Center Lon:{' '}
                                 <input
@@ -1612,7 +1620,7 @@ export default function MoonMap() {
                         </div>
                     )}
 
-                    <div style={{ marginTop: 20, color: '#fff' }}>
+                    <div style={{ marginTop: 20, color: '#black' }}>
                         <div>Lon: {cursorCoords.lon.toFixed(2)}, Lat: {cursorCoords.lat.toFixed(2)}</div>
                         <div>Elevation: {elevation ? `${elevation.toFixed(2)} meters` : 'Loading...'}</div>
                         <div>Slope: {slope ? `${slope.percent.toFixed(1)} % ${slope.degrees.toFixed(1)}° ${slope?.direction}` : 'Loading...'}</div>
@@ -1657,9 +1665,9 @@ export default function MoonMap() {
                 </div>
 
 
-                <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 1000 }}>
+                <div className='map-controls-group buttons-tab' >
                     {/* Правая панель: смена слоя + режим размещения */}
-                    <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 1000 }}>
+                    <div >
                         <div style={{ position: 'relative' }}>
                             <button
                                 onClick={() => setShowLayerMenu(!showLayerMenu)}
@@ -1847,7 +1855,7 @@ export default function MoonMap() {
                     </div>
                 )}
 
-                <div className='save_plan_button' style={{ marginTop: 10 }}>
+                <div className='buttons-tab save-plan-button' style={{ marginTop: 10 }}>
                     <button onClick={exportPlan}>💾 Сохранить план</button>
                     <input
                         type="file"
@@ -1857,7 +1865,7 @@ export default function MoonMap() {
                                 importPlan(e.target.files[0]);
                             }
                         }}
-                        style={{ marginTop: 6 }}
+                        
                     />
                 </div>
 

@@ -285,7 +285,7 @@
     z-index: 999 !important;
 }
 
-.save_plan_button {
+.save-plan-button {
     
     position: fixed;
     bottom: 10px; 
@@ -295,26 +295,43 @@
     
     gap: 10px;
     
-    background-color: rgba(0, 0, 0, 0.6);
+   
     z-index: 1000; /* Убедимся, что элемент поверх всего */
-    padding: 10px;
+    
     border-radius: 8px;
+    background: rgb(255, 255, 255);
+    
 }
 
-.save_plan_button button {
-    background-color: #ffffff;
-    border: 1px solid #ccc;
+.save-plan-button button {
+
+    border:none;
     padding: 8px 16px;
     cursor: pointer;
     border-radius: 4px;
-    color: #333;
-    font-size: 14px;
+    color: #ffffff;
+    font-size: 15px;
+    background: rgb(51, 51, 51);
+    height: 100%;
 }
 
-.save_plan_button input[type="file"] {
-    margin-top: 6px;
+.save-plan-button input[type="file"]::-webkit-file-upload-button {
+    
+    border:none;
+    padding: 8px 16px;
     cursor: pointer;
-    color: #FFFFFF;
+    border-radius: 4px;
+    color: #ffffff;
+    font-size: 15px;
+    background: rgb(51, 51, 51);
+    height: 36px;
+    
+}
+
+.save-plan-button input[type="file"] {
+    height: 36px;
+    cursor: pointer;
+    color: #000000;
     -webkit-backdrop-filter: drop-shadow(10);
 }
 
@@ -345,12 +362,14 @@
 
 .module-buttons-container {
     display: flex;
+    border-radius: 6px;
 }
 
 .module-buttons-container p {
     text-align: left;
     font-size: 15px;
-    padding: 0 5px
+    padding: 0 5px;
+    margin: 0;
 }
 
 .button_info {
@@ -386,4 +405,17 @@
 
 .items::-webkit-scrollbar-thumb:hover {
     background: #555;
+}
+
+.map-controls-group {
+    background: white;
+    border-radius: 15px;
+    position: absolute;
+    top: 80px;
+    right: 10px;
+    z-index: 1000;
+}
+
+.bottom-info-tab {
+    background: white;
 }
