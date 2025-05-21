@@ -325,7 +325,8 @@
     font-size: 15px;
     background: rgb(51, 51, 51);
     height: 36px;
-    
+    font-family: "Geologica", sans-serif;
+    margin-right: 20px;
 }
 
 .save-plan-button input[type="file"] {
@@ -333,6 +334,8 @@
     cursor: pointer;
     color: #000000;
     -webkit-backdrop-filter: drop-shadow(10);
+    font-family: "Geologica", sans-serif;
+    font-size: 15px;
 }
 
 
@@ -418,4 +421,6 @@
 
 .bottom-info-tab {
     background: white;
+    width: 300px;
 }
+

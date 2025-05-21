@@ -163,7 +163,7 @@ const initialModules: Module[] = [
     { 
         id: 'connectiontower', 
         name: 'Вышка связи', 
-        radius: 85, 
+        radius: 20, 
         description: 'Вышка связи для передачи данных между модулями.', 
         additionalInfo: 'Очень высокая.' 
     }
@@ -1621,9 +1621,9 @@ export default function MoonMap() {
                     )}
 
                     <div style={{ marginTop: 20, color: '#black' }}>
-                        <div>Lon: {cursorCoords.lon.toFixed(2)}, Lat: {cursorCoords.lat.toFixed(2)}</div>
-                        <div>Elevation: {elevation ? `${elevation.toFixed(2)} meters` : 'Loading...'}</div>
-                        <div>Slope: {slope ? `${slope.percent.toFixed(1)} % ${slope.degrees.toFixed(1)}° ${slope?.direction}` : 'Loading...'}</div>
+                        <div>Долгота: {cursorCoords.lon.toFixed(2)}, Широта: {cursorCoords.lat.toFixed(2)}</div>
+                        <div>Высота: {elevation ? `${elevation.toFixed(2)} метров` : 'Загрузка...'}</div>
+                        <div>Наклон: {slope ? `${slope.percent.toFixed(1)} % ${slope.degrees.toFixed(1)}° ${slope?.direction}` : 'Загрузка...'}</div>
                     </div>
                 </div>
 
@@ -1658,6 +1658,7 @@ export default function MoonMap() {
                             color: 'white',
                             fontSize: '14px',
                             textShadow: '0 0 2px black',
+                            width: '300px'
                         }}
                     >
                         {/* Значение будет установлено динамически */}
